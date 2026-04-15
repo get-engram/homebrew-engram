@@ -5,12 +5,6 @@ Persistent memory for AI agents. Auto-captures Claude Code conversations and mak
 ## Install
 
 ```bash
-brew install get-engram/engram/engram
-```
-
-Or tap first:
-
-```bash
 brew tap get-engram/engram
 brew install engram
 ```
