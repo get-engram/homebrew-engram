@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Engram product / CLI issues
+    url: https://github.com/get-engram/engram/issues
+    about: Bugs in the CLI itself belong in the main engram repo — this tap is only the installer.
+  - name: Security vulnerability
+    url: https://github.com/get-engram/engram/security/policy
+    about: Report privately — not in a public issue.
