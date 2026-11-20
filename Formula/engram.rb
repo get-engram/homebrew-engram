@@ -4,11 +4,15 @@ class Engram < Formula
   url "https://registry.npmjs.org/@getengram/cli/-/cli-0.7.0.tgz"
   sha256 "93a514184d4cd04eebc10dd1d97b750f680e1018bdd9d27ebf8d535b11e1bf12"
   license "BSL-1.1"
+  revision 1
 
   depends_on "node"
 
   def install
-    system "npm", "install", *std_npm_args
+    # better-sqlite3 builds its native part in its install script, and
+    # std_npm_args skips install scripts by default: without that part the
+    # daemon can't open its database.
+    system "npm", "install", *std_npm_args(ignore_scripts: false)
     bin.install_symlink libexec.glob("bin/*")
   end
 
@@ -43,5 +47,9 @@ class Engram < Formula
 
   test do
     assert_match "engram", shell_output("#{bin}/engram version")
+
+    # The daemon's database needs better-sqlite3's native part.
+    sqlite = libexec/"lib/node_modules/@getengram/cli/node_modules/better-sqlite3"
+    system Formula["node"].opt_bin/"node", "-e", "new (require(process.argv[1]))(':memory:')", sqlite
   end
 end
