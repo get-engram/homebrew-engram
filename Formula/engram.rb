@@ -4,9 +4,13 @@ class Engram < Formula
   url "https://registry.npmjs.org/@getengram/cli/-/cli-0.7.0.tgz"
   sha256 "93a514184d4cd04eebc10dd1d97b750f680e1018bdd9d27ebf8d535b11e1bf12"
   license "BSL-1.1"
-  revision 1
+  revision 2
 
-  depends_on "node"
+  # better-sqlite3's native part only loads in the Node major it was built
+  # for. A versioned Node keeps a new major of the `node` formula from
+  # breaking the daemon's database. When node@24 is deprecated, move to the
+  # next LTS formula and bump the revision.
+  depends_on "node@24"
 
   def install
     # better-sqlite3 builds its native part in its install script, and
@@ -50,6 +54,6 @@ class Engram < Formula
 
     # The daemon's database needs better-sqlite3's native part.
     sqlite = libexec/"lib/node_modules/@getengram/cli/node_modules/better-sqlite3"
-    system Formula["node"].opt_bin/"node", "-e", "new (require(process.argv[1]))(':memory:')", sqlite
+    system Formula["node@24"].opt_bin/"node", "-e", "new (require(process.argv[1]))(':memory:')", sqlite
   end
 end
